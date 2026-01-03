@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const galleryItems = document.querySelectorAll('.clickable-gallery');
     const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:14000;display:none;opacity:0;transition:opacity 0.3s;';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.1);z-index:14000;display:none;opacity:0;transition:opacity 0.3s;';
     document.body.appendChild(overlay);
 
     galleryItems.forEach(item => {
@@ -382,36 +382,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // ==========================================
-    // 9. Mail Logic
-    // ==========================================
-    const checkboxes = document.querySelectorAll('.toggle-btn input');
-    const msgDisplay = document.getElementById('msg-display');
-    const mailBtn = document.getElementById('mail-btn');
-    const emailLink = document.getElementById('email-link');
+// ==========================================
+// 9. Mail & Contact Logic (Gmail Web Optimized)
+// ==========================================
+const checkboxes = document.querySelectorAll('.toggle-btn input');
+const msgDisplay = document.getElementById('msg-display');
+const mailBtn = document.getElementById('mail-btn');
+const emailLink = document.getElementById('email-link');
 
-    if(checkboxes.length > 0) {
-        checkboxes.forEach(cb => cb.addEventListener('change', () => {
-            const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
-            msgDisplay.innerText = selected.length ? `SELECTED: [ ${selected.join(' + ')} ]` : 'READY TO TRANSMIT...';
-            msgDisplay.style.color = selected.length ? '#00ff9d' : '#00f3ff';
-        }));
-    }
+// 更新選取狀態文字與 UI
+if(checkboxes.length > 0) {
+    checkboxes.forEach(cb => cb.addEventListener('change', () => {
+        const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+        msgDisplay.innerText = selected.length ? `SELECTED: [ ${selected.join(' + ')} ]` : 'READY TO TRANSMIT...';
+        msgDisplay.style.color = selected.length ? '#00ff9d' : '#00f3ff';
+        
+        if(mailBtn) {
+            mailBtn.innerHTML = '<i class="fa-solid fa-envelope"></i> 產生訊息並開啟 Gmail';
+            mailBtn.style.background = ""; 
+            mailBtn.style.color = "";
+        }
+    }));
+}
 
-    if(mailBtn) {
-        mailBtn.addEventListener('click', () => {
-            const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
-            if (!selected.length) { alert('PLEASE SELECT AT LEAST ONE MODULE.'); return; }
+if(mailBtn) {
+    mailBtn.addEventListener('click', () => {
+        const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+        
+        // 1. 檢查是否有選取
+        if (!selected.length) { 
+            msgDisplay.innerText = "ERROR: PLEASE SELECT A TYPE";
+            msgDisplay.style.color = "#ff0000";
+            alert('請至少選擇一個合作方案！'); 
+            return; 
+        }
+        
+        // 2. 準備信件內容
+        const targetEmail = "ookkcity@gmail.com";
+        const subject = `OK CITY 合作邀約 - ${selected.join(' / ')}`;
+        const bodyText = `Hi OK CITY，\n\n我們對以下項目感興趣：\n[ ${selected.join(' / ')} ]\n\n希望能進一步討論合作細節。\n\n[請在此處輸入您的聯絡資訊]`;
+        
+        // 3. 執行自動複製 (方便使用者萬一跳轉失敗可以手動貼上)
+        navigator.clipboard.writeText(bodyText).then(() => {
+            // UI 反饋
+            mailBtn.innerHTML = '<i class="fa-solid fa-check"></i> 訊息已複製，跳轉中...';
+            mailBtn.style.background = "var(--neon)"; 
+            mailBtn.style.color = "#000";
             
-            const bodyText = `Hi 典恩，\n\n我們對以下項目有興趣：\n[ ${selected.join(' / ')} ]\n\n希望能進一步討論合作細節。\n\nBest Regards,`;
+            if(emailLink) emailLink.style.display = 'block';
+
+            // 4. 建構 Gmail Web URL
+            // 這會直接打開 Gmail 網頁版並填好收件人、主旨與內容
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
             
-            navigator.clipboard.writeText(bodyText).then(() => {
-                mailBtn.innerText = "COPIED! CLICK LINK BELOW";
-                mailBtn.style.background = "#00ff9d"; mailBtn.style.color = "#000";
-                emailLink.style.display = 'block';
-            });
+            // 延遲跳轉，確保使用者看到複製成功的狀態
+            setTimeout(() => {
+                window.open(gmailUrl, '_blank'); // 開啟新分頁
+            }, 600);
+
+        }).catch(err => {
+            // 後備方案：如果複製失敗，直接嘗試跳轉
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodeURIComponent(subject)}`;
+            window.open(gmailUrl, '_blank');
         });
-    }
+    });
+}
 
 
     // ==========================================
@@ -458,6 +493,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hasAnimatedData && Math.abs(6000 - currentZ) < 500) {
             hasAnimatedData = true;
             animateCounters();
+        }
+
+        // [新增] 離開遊戲頁面(Stage Z=13500)自動結束
+        if (Math.abs(currentZ - 13500) > 800) {
+            if (window.stopFaderGame) window.stopFaderGame();
         }
         
         if (isAudioInit && analyser) {
@@ -566,178 +606,182 @@ document.addEventListener('DOMContentLoaded', () => {
         drawStars();
     }
 
-// ==========================================
-// 12. [NEW] Mini Game: Fader Rush (Mobile Ready)
-// ==========================================
-const gameCanvas = document.getElementById('game-canvas');
-const gameCtx = gameCanvas ? gameCanvas.getContext('2d') : null;
-const gameStartBtn = document.getElementById('start-game-btn');
-const gameOverlay = document.getElementById('game-start-screen');
-const scoreDisplay = document.getElementById('game-score');
+    // ==========================================
+    // 12. [NEW] Mini Game: Fader Rush (Mobile Ready)
+    // ==========================================
+    const gameCanvas = document.getElementById('game-canvas');
+    const gameCtx = gameCanvas ? gameCanvas.getContext('2d') : null;
+    const gameStartBtn = document.getElementById('start-game-btn');
+    const gameOverlay = document.getElementById('game-start-screen');
+    const scoreDisplay = document.getElementById('game-score');
 
-// 建立隨機音效池
-const sfxFiles = ['g1.mp3', 'g2.mp3', 'g3.mp3'];
-const sfxPool = sfxFiles.map(file => {
-    const audio = new Audio(file);
-    audio.preload = 'auto';
-    return audio;
-});
-
-if (gameCanvas && gameCtx) {
-    gameCanvas.width = 600;
-    gameCanvas.height = 400;
-
-    let gameRunning = false;
-    let score = 0;
-    let playerX = 300;
-    const playerWidth = 80;
-    const playerHeight = 15; // 稍微加厚一點，手機比較好操作
-    const playerY = 350;     // 往上提一點，避免被手機底部的導覽條擋住
-    
-    let notes = [];
-    let particles = [];
-    let spawnRate = 60; 
-    let frameCount = 0;
-
-    function playRandomCatchSfx() {
-        const randomIndex = Math.floor(Math.random() * sfxPool.length);
-        const selectedSfx = sfxPool[randomIndex];
-        selectedSfx.currentTime = 0;
-        selectedSfx.play().catch(e => {});
-    }
-
-    function createExplosion(x, y, color) {
-        const particleCount = 12;
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: x, y: y,
-                size: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 10,
-                speedY: (Math.random() - 0.5) * 10,
-                life: 1.0,
-                decay: Math.random() * 0.03 + 0.02,
-                color: color
-            });
-        }
-    }
-
-    // --- [核心修改] 統一處理位置控制 ---
-    function handleMove(clientX) {
-        const rect = gameCanvas.getBoundingClientRect();
-        const scaleX = gameCanvas.width / rect.width;
-        let nextX = (clientX - rect.left) * scaleX;
-        // 限制擋板不超出邊界
-        if (nextX < playerWidth/2) nextX = playerWidth/2;
-        if (nextX > gameCanvas.width - playerWidth/2) nextX = gameCanvas.width - playerWidth/2;
-        playerX = nextX;
-    }
-
-    // 滑鼠事件
-    gameCanvas.addEventListener('mousemove', (e) => {
-        handleMove(e.clientX);
+    // 建立隨機音效池
+    const sfxFiles = ['g1.mp3', 'g2.mp3', 'g3.mp3'];
+    const sfxPool = sfxFiles.map(file => {
+        const audio = new Audio(file);
+        audio.preload = 'auto';
+        return audio;
     });
 
-    // 觸控事件 (支援手機)
-    gameCanvas.addEventListener('touchmove', (e) => {
-        e.preventDefault(); // 防止滾動頁面
-        if (e.touches.length > 0) {
-            handleMove(e.touches[0].clientX);
+    if (gameCanvas && gameCtx) {
+        gameCanvas.width = 600;
+        gameCanvas.height = 400;
+
+        let gameRunning = false;
+        let score = 0;
+        let playerX = 300;
+        const playerWidth = 80;
+        const playerHeight = 15; 
+        const playerY = 350;     
+        
+        let notes = [];
+        let particles = [];
+        let spawnRate = 60; 
+        let frameCount = 0;
+
+        function playRandomCatchSfx() {
+            const randomIndex = Math.floor(Math.random() * sfxPool.length);
+            const selectedSfx = sfxPool[randomIndex];
+            selectedSfx.currentTime = 0;
+            selectedSfx.play().catch(e => {});
         }
-    }, { passive: false });
 
-    gameCanvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (e.touches.length > 0) {
-            handleMove(e.touches[0].clientX);
-        }
-    }, { passive: false });
-    // --------------------------------
-
-    function resetGame() {
-        score = 0;
-        notes = [];
-        particles = [];
-        spawnRate = 60;
-        scoreDisplay.innerText = "0";
-        scoreDisplay.style.color = '#fff';
-        gameRunning = true;
-        gameOverlay.classList.add('hidden');
-        gameLoop();
-    }
-
-    function gameLoop() {
-        if (!gameRunning) return;
-
-        gameCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-        gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-        // 繪製擋板
-        gameCtx.fillStyle = '#00ff9d';
-        gameCtx.shadowBlur = 20;
-        gameCtx.shadowColor = '#00ff9d';
-        gameCtx.fillRect(playerX - playerWidth/2, playerY, playerWidth, playerHeight);
-        gameCtx.shadowBlur = 0;
-
-        // 粒子系統更新
-        particles.forEach((p, i) => {
-            p.x += p.speedX; p.y += p.speedY; p.life -= p.decay;
-            if (p.life <= 0) { particles.splice(i, 1); }
-            else {
-                gameCtx.globalAlpha = p.life;
-                gameCtx.fillStyle = p.color;
-                gameCtx.fillRect(p.x, p.y, p.size, p.size);
+        function createExplosion(x, y, color) {
+            const particleCount = 12;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: x, y: y,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 10,
+                    speedY: (Math.random() - 0.5) * 10,
+                    life: 1.0,
+                    decay: Math.random() * 0.03 + 0.02,
+                    color: color
+                });
             }
+        }
+
+        function handleMove(clientX) {
+            const rect = gameCanvas.getBoundingClientRect();
+            const scaleX = gameCanvas.width / rect.width;
+            let nextX = (clientX - rect.left) * scaleX;
+            if (nextX < playerWidth/2) nextX = playerWidth/2;
+            if (nextX > gameCanvas.width - playerWidth/2) nextX = gameCanvas.width - playerWidth/2;
+            playerX = nextX;
+        }
+
+        // [新增] 強制結束遊戲並重置
+        window.stopFaderGame = function() {
+            if (!gameRunning) return;
+            gameRunning = false;
+            notes = [];
+            particles = [];
+            gameOverlay.classList.remove('hidden');
+            gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        };
+
+        gameCanvas.addEventListener('mousemove', (e) => {
+            handleMove(e.clientX);
         });
-        gameCtx.globalAlpha = 1.0;
 
-        frameCount++;
-        if (frameCount % spawnRate === 0) {
-            const size = Math.random() * 8 + 12;
-            notes.push({
-                x: Math.random() * (gameCanvas.width - 40) + 20,
-                y: -20,
-                size: size,
-                speed: Math.random() * 3 + 2.5, // 手機版速度稍微快一點點比較有感
-                color: Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'
+        gameCanvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                handleMove(e.touches[0].clientX);
+            }
+        }, { passive: false });
+
+        gameCanvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                handleMove(e.touches[0].clientX);
+            }
+        }, { passive: false });
+
+        function resetGame() {
+            score = 0;
+            notes = [];
+            particles = [];
+            spawnRate = 60;
+            scoreDisplay.innerText = "0";
+            scoreDisplay.style.color = '#fff';
+            gameRunning = true;
+            gameOverlay.classList.add('hidden');
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            gameCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            // 繪製擋板
+            gameCtx.fillStyle = '#00ff9d';
+            gameCtx.shadowBlur = 20;
+            gameCtx.shadowColor = '#00ff9d';
+            gameCtx.fillRect(playerX - playerWidth/2, playerY, playerWidth, playerHeight);
+            gameCtx.shadowBlur = 0;
+
+            // 粒子更新
+            particles.forEach((p, i) => {
+                p.x += p.speedX; p.y += p.speedY; p.life -= p.decay;
+                if (p.life <= 0) { particles.splice(i, 1); }
+                else {
+                    gameCtx.globalAlpha = p.life;
+                    gameCtx.fillStyle = p.color;
+                    gameCtx.fillRect(p.x, p.y, p.size, p.size);
+                }
             });
-            if (spawnRate > 18) spawnRate--; 
-        }
+            gameCtx.globalAlpha = 1.0;
 
-        for (let i = 0; i < notes.length; i++) {
-            let n = notes[i];
-            n.y += n.speed;
-
-            gameCtx.beginPath();
-            gameCtx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
-            gameCtx.fillStyle = n.color;
-            gameCtx.fill();
-
-            if (
-                n.y + n.size >= playerY && 
-                n.y - n.size <= playerY + playerHeight &&
-                n.x >= playerX - playerWidth/2 &&
-                n.x <= playerX + playerWidth/2
-            ) {
-                playRandomCatchSfx();
-                createExplosion(n.x, n.y, n.color);
-                score += 10;
-                scoreDisplay.innerText = score;
-                scoreDisplay.style.color = '#00ff9d';
-                notes.splice(i, 1);
-                i--;
-                continue;
+            frameCount++;
+            if (frameCount % spawnRate === 0) {
+                const size = Math.random() * 8 + 12;
+                notes.push({
+                    x: Math.random() * (gameCanvas.width - 40) + 20,
+                    y: -20,
+                    size: size,
+                    speed: Math.random() * 3 + 2.5,
+                    color: Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'
+                });
+                if (spawnRate > 18) spawnRate--; 
             }
 
-            if (n.y > gameCanvas.height) {
-                notes.splice(i, 1); i--;
-                if(score > 0) score -= 5;
-                scoreDisplay.innerText = score;
-                scoreDisplay.style.color = '#ff4d4d';
+            for (let i = 0; i < notes.length; i++) {
+                let n = notes[i];
+                n.y += n.speed;
+
+                gameCtx.beginPath();
+                gameCtx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
+                gameCtx.fillStyle = n.color;
+                gameCtx.fill();
+
+                if (
+                    n.y + n.size >= playerY && 
+                    n.y - n.size <= playerY + playerHeight &&
+                    n.x >= playerX - playerWidth/2 &&
+                    n.x <= playerX + playerWidth/2
+                ) {
+                    playRandomCatchSfx();
+                    createExplosion(n.x, n.y, n.color);
+                    score += 10;
+                    scoreDisplay.innerText = score;
+                    scoreDisplay.style.color = '#00ff9d';
+                    notes.splice(i, 1);
+                    i--;
+                    continue;
+                }
+
+                if (n.y > gameCanvas.height) {
+                    notes.splice(i, 1); i--;
+                    if(score > 0) score -= 5;
+                    scoreDisplay.innerText = score;
+                    scoreDisplay.style.color = '#ff4d4d';
+                }
             }
+            requestAnimationFrame(gameLoop);
         }
-        requestAnimationFrame(gameLoop);
+        gameStartBtn.addEventListener('click', resetGame);
     }
-    gameStartBtn.addEventListener('click', resetGame);
-}
-
 });

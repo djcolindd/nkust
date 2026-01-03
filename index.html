@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OK CITY | SYSTEM V11.0</title>
+    <title>何典恩-企業軟體應用期末報告 V11.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Noto+Sans+TC:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -30,9 +30,9 @@
     <!-- 啟動遮罩 -->
     <div id="start-overlay">
         <div class="start-content">
-            <h1>SYSTEM STANDBY</h1>
-            <p>CLICK TO INITIALIZE</p>
-            <button id="start-btn" class="hover-target">LAUNCH</button>
+            <h1>準備好了嗎？</h1>
+            <p>點擊開始</p>
+            <button id="start-btn" class="hover-target">執行！</button>
         </div>
     </div>
 
@@ -95,7 +95,7 @@
         <!-- 1. 個人檔案 -->
         <div class="stage" data-z="1500">
             <div class="panel profile-panel">
-                <div class="panel-header">PILOT IDENTITY</div>
+                <div class="panel-header">個人介紹 Personal Introduction</div>
                 <div class="profile-content">
                     <div class="img-frame">
                         <img src="assets/profile.jpg" onerror="this.src='https://placehold.co/400x400/111/fff?text=NO+IMG'" alt="Profile">
@@ -105,8 +105,8 @@
                         <h2>何典恩 <small>HO DIAN-EN</small></h2>
                         <ul class="specs">
                             <li><i class="fa-solid fa-sliders"></i> 音樂製作人</li>
-                            <li><i class="fa-solid fa-headphones"></i> DJ 演出</li>
-                            <li><i class="fa-solid fa-building"></i> 品牌主理人</li>
+                            <li><i class="fa-solid fa-headphones"></i> DJ</li>
+                            <li><i class="fa-solid fa-building"></i> OK CITY 品牌主理人</li>
                         </ul>
                         <a href="https://www.notion.so/DJ-ColinDD-ab36210b788342758708d3cefd8ac2e5" target="_blank" class="action-btn notion-btn hover-target">
                             <i class="fa-solid fa-file-lines"></i> 完整簡歷 (Notion)
@@ -145,7 +145,7 @@
 
         <!-- 3. 音樂作品 -->
         <div class="stage" data-z="4500">
-            <div class="floating-title">SONIC ARCHIVE</div>
+            <div class="floating-title">Released Works</div>
             <div class="cd-row">
                 <div class="cd-container hover-target">
                     <div class="cd-disc draggable-cd spotify-cd" data-link="https://open.spotify.com/artist/69sjM8G6nq8FH8OdkUbPRx">
@@ -165,11 +165,11 @@
         <!-- 4. DATA CORE -->
         <div class="stage" data-z="6000">
             <div class="panel data-panel">
-                <div class="panel-header">DATA ANALYTICS</div>
+                <div class="panel-header">DATA ANALYTICS 數據</div>
                 <div class="data-row">
-                    <div class="data-box"><h3 class="counter" data-target="5000">0</h3><small>TOTAL STREAMS</small></div>
-                    <div class="data-box"><h3 class="counter" data-target="20">0</h3><small>LIVE GIGS</small></div>
-                    <div class="data-box"><h3 class="counter" data-target="2024">0</h3><small>ESTABLISHED</small></div>
+                    <div class="data-box"><h3 class="counter" data-target="400000">0</h3><small>TOTAL STREAMS 串流播放</small></div>
+                    <div class="data-box"><h3 class="counter" data-target="100">0</h3><small>LIVE 線下演出</small></div>
+                    <div class="data-box"><h3 class="counter" data-target="55">0</h3><small>WORK 發行單曲</small></div>
                 </div>
             </div>
         </div>
@@ -177,23 +177,23 @@
         <!-- 5. DJ 演出 (改為點擊放大) -->
         <div class="stage" data-z="7500">
             <div class="panel gallery-panel">
-                <div class="panel-header">LIVE LOCATIONS (CLICK TO VIEW)</div>
+                <div class="panel-header">Performance Experience (CLICK TO VIEW)</div>
                 <div class="gallery-grid">
                     <div class="gallery-item hover-target clickable-gallery">
                         <div class="img-wrap"><img src="assets/underlink.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=UnderLink'"></div>
-                        <div class="caption"><strong>TAIPEI</strong><small>UnderLink</small></div>
+                        <div class="caption"><strong>TAIPEI</strong><small>RUFF</small></div>
                     </div>
                     <div class="gallery-item hover-target clickable-gallery">
                         <div class="img-wrap"><img src="assets/xcute.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=X-Cute'"></div>
-                        <div class="caption"><strong>KAOHSIUNG</strong><small>X-Cute</small></div>
+                        <div class="caption"><strong>KAOHSIUNG</strong><small>X-CUTE</small></div>
                     </div>
                     <div class="gallery-item hover-target clickable-gallery">
                         <div class="img-wrap"><img src="assets/klash.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=Klash'"></div>
-                        <div class="caption"><strong>KAOHSIUNG</strong><small>Klash</small></div>
+                        <div class="caption"><strong>KAOHSIUNG</strong><small>KLASH</small></div>
                     </div>
                     <div class="gallery-item hover-target clickable-gallery">
                         <div class="img-wrap"><img src="assets/meet.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=Meet'"></div>
-                        <div class="caption"><strong>TAOYUAN</strong><small>Meet</small></div>
+                        <div class="caption"><strong>TAOYUAN</strong><small>MEET</small></div>
                     </div>
                 </div>
             </div>
@@ -235,7 +235,7 @@
         <!-- 7. 經紀公司 (修復按鈕點擊) -->
         <div class="stage" data-z="10500">
             <div class="panel agency-panel">
-                <div class="panel-header">OK CITY AGENCY (CLICK TO EXPAND)</div>
+                <div class="panel-header">OK CITY (CLICK TO EXPAND)</div>
                 <div class="poster-row">
                     
                     <!-- Jeremy Card -->
@@ -243,7 +243,7 @@
                         <img src="assets/concert_jeremy_20250829.jpg" onerror="this.src='https://placehold.co/400x600/333/fff?text=Jeremy+Poster'">
                         <div class="poster-info">
                             <h4>JEREMY J.M</h4>
-                            <p>2025.08.29 專場</p>
+                            <p>2025.08.29 首發專場</p>
                         </div>
                         <!-- 隱藏的連結區 (展開後顯示) -->
                         <div class="agency-links">
@@ -258,8 +258,8 @@
                     <div class="poster-card hover-target expandable-card" data-show-img="assets/willyshow.jpg">
                         <img src="assets/concert_willy_20250524.jpg" onerror="this.src='https://placehold.co/400x600/333/fff?text=Willy+Poster'">
                         <div class="poster-info">
-                            <h4>WILLY</h4>
-                            <p>2025.05.24 演唱會</p>
+                            <h4>WILLY 簡嘉彣</h4>
+                            <p>2025.05.24 專輯演唱會</p>
                         </div>
                         <div class="agency-links">
                             <a href="https://okcity.my.canva.site/willy" target="_blank" class="link-btn">藝人介紹</a>
@@ -276,13 +276,13 @@
         <!-- 8. 合作控制台 -->
         <div class="stage" data-z="12000">
             <div class="panel control-panel">
-                <div class="panel-header">MISSION CONTROL</div>
-                <p class="panel-desc">SELECT COLLABORATION TYPE:</p>
+                <div class="panel-header">Contact Us</div>
+                <p class="panel-desc">SELECT COLLABORATION TYPE 選擇方案:</p>
                 <div class="switch-grid">
-                    <label class="toggle-btn hover-target"><input type="checkbox" value="編曲製作"><span class="btn-face">BEAT MAKING</span></label>
-                    <label class="toggle-btn hover-target"><input type="checkbox" value="DJ 演出"><span class="btn-face">DJ LIVE SET</span></label>
-                    <label class="toggle-btn hover-target"><input type="checkbox" value="藝人經紀"><span class="btn-face">AGENCY</span></label>
-                    <label class="toggle-btn hover-target"><input type="checkbox" value="活動企劃"><span class="btn-face">EVENT PLAN</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="編曲製作"><span class="btn-face">BEAT MAKING 編曲</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="DJ 演出"><span class="btn-face">DJ 演出</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="藝人經紀"><span class="btn-face">AGENCY 藝人合作</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="活動企劃"><span class="btn-face">EVENT PLAN 企劃活動</span></label>
                 </div>
                 
                 <!-- [修改] 按鈕區域 -->
@@ -293,12 +293,12 @@
                     <div class="btn-group">
                         <!-- 原本的 Mail 按鈕 -->
                         <button id="mail-btn" class="main-launch-btn hover-target">
-                            <i class="fa-solid fa-envelope"></i> GENERATE & MAIL
+                            <i class="fa-solid fa-envelope"></i> 產生邀約訊息並自動複製
                         </button>
                         
                         <!-- [新增] Line 按鈕 -->
                         <a href="https://lin.ee/BuzWr3d" target="_blank" class="line-btn hover-target">
-                            <i class="fa-brands fa-line"></i> ADD LINE
+                            <i class="fa-brands fa-line"></i> 加 LINE
                         </a>
                     </div>
 

@@ -31,7 +31,7 @@ body { background: var(--bg); color: #fff; font-family: 'Space Grotesk', sans-se
 #flying-logo.docked {
     top: 25px; left: 40px; transform: translate(0, 0) scale(1);
     width: 40px; opacity: 1; z-index: 5000;
-    filter: none;
+    filter: drop-shadow(0 0 2px #bc13fe) drop-shadow(0 0 2px #bc13fe);
 }
 
 /* Stage 0 Text (位於 Logo 上方) */
