@@ -71,6 +71,8 @@
                 <div class="nav-dot hover-target" data-idx="6" title="LOG"></div>
                 <div class="nav-dot hover-target" data-idx="7" title="AGENCY"></div>
                 <div class="nav-dot hover-target" data-idx="8" title="CONTACT"></div>
+                <div class="nav-dot hover-target" data-idx="9" title="GAME"></div>
+                <div class="nav-dot hover-target" data-idx="10" title="THANK YOU"></div>
             </div>
         </div>
         <p>SCROLL TO NAVIGATE</p>
@@ -305,9 +307,28 @@
             </div>
         </div>
 
+        <!-- ... 上面是 Stage 8 (Contact) ... -->
 
-        <!-- 9. 結尾 -->
-        <div class="stage" data-z="13000">
+        <!-- [NEW] Stage 9: MINI GAME -->
+        <div class="stage" data-z="13500">
+            <div class="game-container">
+                <div class="game-header">
+                    <h3>FADER RUSH</h3>
+                    <p>CATCH THE BEATS // SCORE: <span id="game-score">0</span></p>
+                </div>
+                <canvas id="game-canvas"></canvas>
+                <div class="game-overlay" id="game-start-screen">
+                    <div class="game-msg">
+                        <h4>READY?</h4>
+                        <p>MOVE MOUSE TO CONTROL FADER</p>
+                        <button id="start-game-btn" class="hover-target">START GAME</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [MODIFIED] Stage 10: 結尾 (Z軸往後推) -->
+        <div class="stage" data-z="15000">
             <h1 class="mega-title">THANKS</h1>
             <p>DESIGNED BY HO DIAN-EN</p>
         </div>

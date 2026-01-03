@@ -565,4 +565,179 @@ document.addEventListener('DOMContentLoaded', () => {
         initStars();
         drawStars();
     }
+
+// ==========================================
+// 12. [NEW] Mini Game: Fader Rush (Mobile Ready)
+// ==========================================
+const gameCanvas = document.getElementById('game-canvas');
+const gameCtx = gameCanvas ? gameCanvas.getContext('2d') : null;
+const gameStartBtn = document.getElementById('start-game-btn');
+const gameOverlay = document.getElementById('game-start-screen');
+const scoreDisplay = document.getElementById('game-score');
+
+// 建立隨機音效池
+const sfxFiles = ['g1.mp3', 'g2.mp3', 'g3.mp3'];
+const sfxPool = sfxFiles.map(file => {
+    const audio = new Audio(file);
+    audio.preload = 'auto';
+    return audio;
+});
+
+if (gameCanvas && gameCtx) {
+    gameCanvas.width = 600;
+    gameCanvas.height = 400;
+
+    let gameRunning = false;
+    let score = 0;
+    let playerX = 300;
+    const playerWidth = 80;
+    const playerHeight = 15; // 稍微加厚一點，手機比較好操作
+    const playerY = 350;     // 往上提一點，避免被手機底部的導覽條擋住
+    
+    let notes = [];
+    let particles = [];
+    let spawnRate = 60; 
+    let frameCount = 0;
+
+    function playRandomCatchSfx() {
+        const randomIndex = Math.floor(Math.random() * sfxPool.length);
+        const selectedSfx = sfxPool[randomIndex];
+        selectedSfx.currentTime = 0;
+        selectedSfx.play().catch(e => {});
+    }
+
+    function createExplosion(x, y, color) {
+        const particleCount = 12;
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: x, y: y,
+                size: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 10,
+                speedY: (Math.random() - 0.5) * 10,
+                life: 1.0,
+                decay: Math.random() * 0.03 + 0.02,
+                color: color
+            });
+        }
+    }
+
+    // --- [核心修改] 統一處理位置控制 ---
+    function handleMove(clientX) {
+        const rect = gameCanvas.getBoundingClientRect();
+        const scaleX = gameCanvas.width / rect.width;
+        let nextX = (clientX - rect.left) * scaleX;
+        // 限制擋板不超出邊界
+        if (nextX < playerWidth/2) nextX = playerWidth/2;
+        if (nextX > gameCanvas.width - playerWidth/2) nextX = gameCanvas.width - playerWidth/2;
+        playerX = nextX;
+    }
+
+    // 滑鼠事件
+    gameCanvas.addEventListener('mousemove', (e) => {
+        handleMove(e.clientX);
+    });
+
+    // 觸控事件 (支援手機)
+    gameCanvas.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // 防止滾動頁面
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX);
+        }
+    }, { passive: false });
+
+    gameCanvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX);
+        }
+    }, { passive: false });
+    // --------------------------------
+
+    function resetGame() {
+        score = 0;
+        notes = [];
+        particles = [];
+        spawnRate = 60;
+        scoreDisplay.innerText = "0";
+        scoreDisplay.style.color = '#fff';
+        gameRunning = true;
+        gameOverlay.classList.add('hidden');
+        gameLoop();
+    }
+
+    function gameLoop() {
+        if (!gameRunning) return;
+
+        gameCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+        gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+        // 繪製擋板
+        gameCtx.fillStyle = '#00ff9d';
+        gameCtx.shadowBlur = 20;
+        gameCtx.shadowColor = '#00ff9d';
+        gameCtx.fillRect(playerX - playerWidth/2, playerY, playerWidth, playerHeight);
+        gameCtx.shadowBlur = 0;
+
+        // 粒子系統更新
+        particles.forEach((p, i) => {
+            p.x += p.speedX; p.y += p.speedY; p.life -= p.decay;
+            if (p.life <= 0) { particles.splice(i, 1); }
+            else {
+                gameCtx.globalAlpha = p.life;
+                gameCtx.fillStyle = p.color;
+                gameCtx.fillRect(p.x, p.y, p.size, p.size);
+            }
+        });
+        gameCtx.globalAlpha = 1.0;
+
+        frameCount++;
+        if (frameCount % spawnRate === 0) {
+            const size = Math.random() * 8 + 12;
+            notes.push({
+                x: Math.random() * (gameCanvas.width - 40) + 20,
+                y: -20,
+                size: size,
+                speed: Math.random() * 3 + 2.5, // 手機版速度稍微快一點點比較有感
+                color: Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'
+            });
+            if (spawnRate > 18) spawnRate--; 
+        }
+
+        for (let i = 0; i < notes.length; i++) {
+            let n = notes[i];
+            n.y += n.speed;
+
+            gameCtx.beginPath();
+            gameCtx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
+            gameCtx.fillStyle = n.color;
+            gameCtx.fill();
+
+            if (
+                n.y + n.size >= playerY && 
+                n.y - n.size <= playerY + playerHeight &&
+                n.x >= playerX - playerWidth/2 &&
+                n.x <= playerX + playerWidth/2
+            ) {
+                playRandomCatchSfx();
+                createExplosion(n.x, n.y, n.color);
+                score += 10;
+                scoreDisplay.innerText = score;
+                scoreDisplay.style.color = '#00ff9d';
+                notes.splice(i, 1);
+                i--;
+                continue;
+            }
+
+            if (n.y > gameCanvas.height) {
+                notes.splice(i, 1); i--;
+                if(score > 0) score -= 5;
+                scoreDisplay.innerText = score;
+                scoreDisplay.style.color = '#ff4d4d';
+            }
+        }
+        requestAnimationFrame(gameLoop);
+    }
+    gameStartBtn.addEventListener('click', resetGame);
+}
+
 });
