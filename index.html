@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OK CITY | CHRONICLE</title>
+    <title>OK CITY | SYSTEM V11.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Noto+Sans+TC:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 音樂檔案 -->
+    <!-- Flying Logo (修復可見度) -->
+    <div id="flying-logo" class="centered">
+        <img src="assets/logo.png" onerror="this.src='https://placehold.co/100x100/00ff9d/000?text=LOGO'" alt="OK CITY">
+    </div>
+
+    <!-- 游標 -->
+    <div id="cursor">
+        <div class="cursor-center"></div>
+        <div class="cursor-ring"></div>
+        <div class="cursor-label">TARGET: <span id="cursor-target">SYSTEM</span></div>
+        <div class="cursor-crosshair horizontal"></div>
+        <div class="cursor-crosshair vertical"></div>
+    </div>
+
+    <!-- 音樂 -->
     <audio id="bg-music" src="bgm.mp3" loop crossorigin="anonymous"></audio>
 
-    <!-- 啟動遮罩 (必須點擊才能播放音樂) -->
+    <!-- 啟動遮罩 -->
     <div id="start-overlay">
         <div class="start-content">
-            <h1>OK CITY CONSOLE</h1>
-            <p>SYSTEM READY // WAITING FOR INPUT</p>
-            <button id="start-btn">INITIALIZE SYSTEM</button>
+            <h1>SYSTEM STANDBY</h1>
+            <p>CLICK TO INITIALIZE</p>
+            <button id="start-btn" class="hover-target">LAUNCH</button>
         </div>
     </div>
 
@@ -28,12 +42,10 @@
     <!-- HUD -->
     <nav class="hud-nav">
         <div class="hud-left">
-            <span class="logo">OK CITY</span>
             <span class="status-dot"></span> SYSTEM ONLINE
         </div>
         <div class="hud-right">
-            <!-- 音量控制 -->
-            <div class="volume-ctrl">
+            <div class="volume-ctrl hover-target">
                 <i class="fa-solid fa-volume-high" id="vol-icon"></i>
                 <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5">
             </div>
@@ -44,7 +56,7 @@
 
     <div class="hud-bottom">
         <div class="scroll-bar"><div id="scroll-progress"></div></div>
-        <p>SCROLL TO DIVE // 滾動潛入</p>
+        <p>SCROLL TO NAVIGATE</p>
     </div>
 
     <!-- 3D WORLD -->
@@ -52,13 +64,16 @@
 
         <!-- 0. 入口 -->
         <div class="stage" data-z="0">
-            <h1 class="mega-title">OK CITY<br>CONSOLE</h1>
-            <p class="subtitle">AUDIO / VISUAL / AGENCY</p>
-            <div class="start-hint">▼ INITIATE DIVE ▼</div>
+            <div class="hero-text-group">
+                <h2 class="hero-name">何典恩</h2>
+                <p class="hero-sub">企業軟體應用期末報告</p>
+                <div class="tech-line"></div>
+            </div>
+            <div class="start-hint">▼ SCROLL TO DIVE ▼</div>
         </div>
 
         <!-- 1. 個人檔案 -->
-        <div class="stage" data-z="1000">
+        <div class="stage" data-z="1500">
             <div class="panel profile-panel">
                 <div class="panel-header">PILOT IDENTITY</div>
                 <div class="profile-content">
@@ -73,168 +88,202 @@
                             <li><i class="fa-solid fa-headphones"></i> DJ 演出</li>
                             <li><i class="fa-solid fa-building"></i> 品牌主理人</li>
                         </ul>
+                        <a href="https://www.notion.so/DJ-ColinDD-ab36210b788342758708d3cefd8ac2e5" target="_blank" class="action-btn notion-btn hover-target">
+                            <i class="fa-solid fa-file-lines"></i> 完整簡歷 (Notion)
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. THE ARMORY (裝備庫) -->
-        <div class="stage" data-z="2500">
+        <!-- 2. THE ARMORY -->
+        <div class="stage" data-z="3000">
             <div class="floating-title">THE ARMORY</div>
-            <div class="gear-grid">
-                <div class="gear-card">
+            <div class="gear-grid-4">
+                <div class="gear-card hover-target">
                     <i class="fa-solid fa-laptop-code gear-icon"></i>
                     <h4>DAW</h4>
-                    <p>Logic Pro X</p>
-                    <div class="bar"><div style="width:90%"></div></div>
+                    <ul class="gear-list"><li>FL Studio</li><li>Ableton Live 12</li></ul>
                 </div>
-                <div class="gear-card">
-                    <i class="fa-solid fa-music gear-icon"></i>
-                    <h4>SYNTH</h4>
-                    <p>Serum / Massive</p>
-                    <div class="bar"><div style="width:85%"></div></div>
-                </div>
-                <div class="gear-card">
-                    <i class="fa-solid fa-headphones-simple gear-icon"></i>
+                <div class="gear-card hover-target">
+                    <i class="fa-solid fa-headphones gear-icon"></i>
                     <h4>MONITOR</h4>
-                    <p>Sony MDR-7506</p>
-                    <div class="bar"><div style="width:95%"></div></div>
+                    <ul class="gear-list"><li>DT 770 Pro</li></ul>
+                </div>
+                <div class="gear-card hover-target">
+                    <i class="fa-solid fa-volume-high gear-icon"></i>
+                    <h4>SPEAKER</h4>
+                    <ul class="gear-list"><li>ADAM TV5</li></ul>
+                </div>
+                <div class="gear-card hover-target">
+                    <i class="fa-solid fa-wave-square gear-icon"></i>
+                    <h4>SYNTH / FX</h4>
+                    <ul class="gear-list"><li>Serum / Massive</li><li>RX 11</li></ul>
                 </div>
             </div>
         </div>
 
         <!-- 3. 音樂作品 -->
-        <div class="stage" data-z="4000">
+        <div class="stage" data-z="4500">
             <div class="floating-title">SONIC ARCHIVE</div>
             <div class="cd-row">
-                <div class="cd-item" onclick="window.open('https://open.spotify.com/artist/69sjM8G6nq8FH8OdkUbPRx')">
-                    <div class="cd-disc"><i class="fa-brands fa-spotify"></i></div>
-                    <span>SPOTIFY</span>
+                <div class="cd-container hover-target">
+                    <div class="cd-disc draggable-cd spotify-cd" data-link="https://open.spotify.com/artist/69sjM8G6nq8FH8OdkUbPRx">
+                        <i class="fa-brands fa-spotify"></i>
+                    </div>
+                    <span class="cd-label">SPOTIFY</span>
                 </div>
-                <div class="cd-item delay" onclick="window.open('https://www.youtube.com/@colindd')">
-                    <div class="cd-disc youtube"><i class="fa-brands fa-youtube"></i></div>
-                    <span>YOUTUBE</span>
+                <div class="cd-container hover-target">
+                    <div class="cd-disc draggable-cd youtube-cd" data-link="https://www.youtube.com/@colindd">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <span class="cd-label">YOUTUBE</span>
                 </div>
             </div>
         </div>
 
-        <!-- 4. DATA CORE (數據核心) -->
-        <div class="stage" data-z="5500">
+        <!-- 4. DATA CORE -->
+        <div class="stage" data-z="6000">
             <div class="panel data-panel">
                 <div class="panel-header">DATA ANALYTICS</div>
                 <div class="data-row">
-                    <div class="data-box">
-                        <h3 class="counter" data-target="5000">0</h3>
-                        <small>TOTAL STREAMS</small>
-                    </div>
-                    <div class="data-box">
-                        <h3 class="counter" data-target="20">0</h3>
-                        <small>LIVE GIGS</small>
-                    </div>
-                    <div class="data-box">
-                        <h3 class="counter" data-target="2024">0</h3>
-                        <small>ESTABLISHED</small>
-                    </div>
+                    <div class="data-box"><h3 class="counter" data-target="5000">0</h3><small>TOTAL STREAMS</small></div>
+                    <div class="data-box"><h3 class="counter" data-target="20">0</h3><small>LIVE GIGS</small></div>
+                    <div class="data-box"><h3 class="counter" data-target="2024">0</h3><small>ESTABLISHED</small></div>
                 </div>
             </div>
         </div>
 
-        <!-- 5. DJ 演出 -->
-        <div class="stage" data-z="7000">
+        <!-- 5. DJ 演出 (改為點擊放大) -->
+        <div class="stage" data-z="7500">
             <div class="panel gallery-panel">
-                <div class="panel-header">LIVE LOCATIONS</div>
+                <div class="panel-header">LIVE LOCATIONS (CLICK TO VIEW)</div>
                 <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <div class="img-wrap">
-                            <img src="assets/underlink.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=UnderLink'" alt="Taipei">
-                        </div>
-                        <div class="caption">
-                            <strong>TAIPEI</strong>
-                            <small>UnderLink</small>
-                        </div>
+                    <div class="gallery-item hover-target clickable-gallery">
+                        <div class="img-wrap"><img src="assets/underlink.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=UnderLink'"></div>
+                        <div class="caption"><strong>TAIPEI</strong><small>UnderLink</small></div>
                     </div>
-                    <div class="gallery-item">
-                        <div class="img-wrap">
-                            <img src="assets/xcute.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=X-Cute'" alt="Kaohsiung">
-                        </div>
-                        <div class="caption">
-                            <strong>KAOHSIUNG</strong>
-                            <small>X-Cute</small>
-                        </div>
+                    <div class="gallery-item hover-target clickable-gallery">
+                        <div class="img-wrap"><img src="assets/xcute.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=X-Cute'"></div>
+                        <div class="caption"><strong>KAOHSIUNG</strong><small>X-Cute</small></div>
+                    </div>
+                    <div class="gallery-item hover-target clickable-gallery">
+                        <div class="img-wrap"><img src="assets/klash.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=Klash'"></div>
+                        <div class="caption"><strong>KAOHSIUNG</strong><small>Klash</small></div>
+                    </div>
+                    <div class="gallery-item hover-target clickable-gallery">
+                        <div class="img-wrap"><img src="assets/meet.jpg" onerror="this.src='https://placehold.co/600x400/222/fff?text=Meet'"></div>
+                        <div class="caption"><strong>TAOYUAN</strong><small>Meet</small></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 6. FLIGHT LOG (大事記) -->
-        <div class="stage" data-z="8500">
-            <div class="timeline-vertical">
-                <div class="time-node">
-                    <span class="year">2023</span>
-                    <span class="event">Started DJ Career</span>
+        <!-- 6. FLIGHT LOG -->
+        <div class="stage" data-z="9000">
+            <div class="timeline-vertical floating-anim">
+                <div class="time-node hover-target" data-img="assets/2018.jpg">
+                    <span class="year">2018</span><span class="event">開始玩音樂</span>
                 </div>
                 <div class="line"></div>
-                <div class="time-node">
-                    <span class="year">2024</span>
-                    <span class="event">Founded OK CITY</span>
+                <div class="time-node hover-target" data-img="assets/2020.jpg">
+                    <span class="year">2020</span><span class="event">高中創立電音社</span>
                 </div>
                 <div class="line"></div>
-                <div class="time-node future">
-                    <span class="year">2025</span>
-                    <span class="event">Upcoming Concerts</span>
+                <div class="time-node hover-target" data-img="assets/2021.jpg">
+                    <span class="year">2021</span><span class="event">當一位 DJ</span>
+                </div>
+                <div class="line"></div>
+                <div class="time-node hover-target" data-img="assets/2022.jpg">
+                    <span class="year">2022</span><span class="event">組建 Chill DJ 團隊</span>
+                </div>
+                <div class="line"></div>
+                <div class="time-node hover-target" data-img="assets/2024.jpg">
+                    <span class="year">2024</span><span class="event">創立 OK CITY 公司</span>
+                </div>
+                <div class="line"></div>
+                <div class="time-node hover-target" data-img="assets/2025.jpg">
+                    <span class="year">2025</span><span class="event">辦了兩場藝人演唱會</span>
+                </div>
+                <div class="line"></div>
+                <div class="time-node future hover-target" data-img="assets/2026.jpg">
+                    <span class="year">2026</span><span class="event">即將到來...</span>
                 </div>
             </div>
         </div>
 
-        <!-- 7. 經紀公司 -->
-        <div class="stage" data-z="9500">
+        <!-- 7. 經紀公司 (修復按鈕點擊) -->
+        <div class="stage" data-z="10500">
             <div class="panel agency-panel">
-                <div class="panel-header">OK CITY AGENCY</div>
+                <div class="panel-header">OK CITY AGENCY (CLICK TO EXPAND)</div>
                 <div class="poster-row">
-                    <div class="poster-card">
+                    
+                    <!-- Jeremy Card -->
+                    <div class="poster-card hover-target expandable-card" data-show-img="assets/jeremyshow.jpg">
                         <img src="assets/concert_jeremy_20250829.jpg" onerror="this.src='https://placehold.co/400x600/333/fff?text=Jeremy+Poster'">
                         <div class="poster-info">
                             <h4>JEREMY J.M</h4>
                             <p>2025.08.29 專場</p>
-                            <button class="action-btn" onclick="window.open('https://www.instagram.com/jeremy_ok_0521')">VIEW IG</button>
+                        </div>
+                        <!-- 隱藏的連結區 (展開後顯示) -->
+                        <div class="agency-links">
+                            <a href="https://okcity.my.canva.site/jeremyjm" target="_blank" class="link-btn">藝人介紹</a>
+                            <a href="https://www.instagram.com/jeremy_ok_0521/?hl=zh-tw" target="_blank" class="link-btn"><i class="fa-brands fa-instagram"></i> IG</a>
+                            <a href="https://www.youtube.com/@jm_da_rnb_singer" target="_blank" class="link-btn"><i class="fa-brands fa-youtube"></i> YT</a>
+                            <a href="https://open.spotify.com/artist/6f2fATfezOr5lTAOj7Lls3" target="_blank" class="link-btn"><i class="fa-brands fa-spotify"></i> Spotify</a>
                         </div>
                     </div>
-                    <div class="poster-card">
+
+                    <!-- Willy Card -->
+                    <div class="poster-card hover-target expandable-card" data-show-img="assets/willyshow.jpg">
                         <img src="assets/concert_willy_20250524.jpg" onerror="this.src='https://placehold.co/400x600/333/fff?text=Willy+Poster'">
                         <div class="poster-info">
                             <h4>WILLY</h4>
                             <p>2025.05.24 演唱會</p>
-                            <button class="action-btn" onclick="window.open('https://www.instagram.com/willy1004_ok')">VIEW IG</button>
+                        </div>
+                        <div class="agency-links">
+                            <a href="https://okcity.my.canva.site/willy" target="_blank" class="link-btn">藝人介紹</a>
+                            <a href="https://www.instagram.com/willy1004_ok/?hl=zh-tw" target="_blank" class="link-btn"><i class="fa-brands fa-instagram"></i> IG</a>
+                            <a href="https://www.youtube.com/watch?v=QV1X5dZ-exg&list=RDQV1X5dZ-exg&start_radio=1" target="_blank" class="link-btn"><i class="fa-brands fa-youtube"></i> YT</a>
+                            <a href="https://open.spotify.com/artist/03oX7Oneo3MUxztOc4fhIi" target="_blank" class="link-btn"><i class="fa-brands fa-spotify"></i> Spotify</a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
 
         <!-- 8. 合作控制台 -->
-        <div class="stage" data-z="11000">
+        <div class="stage" data-z="12000">
             <div class="panel control-panel">
                 <div class="panel-header">MISSION CONTROL</div>
                 <p class="panel-desc">SELECT COLLABORATION TYPE:</p>
                 <div class="switch-grid">
-                    <label class="toggle-btn"><input type="checkbox" value="編曲製作"><span class="btn-face">BEAT MAKING</span></label>
-                    <label class="toggle-btn"><input type="checkbox" value="DJ 演出"><span class="btn-face">DJ LIVE SET</span></label>
-                    <label class="toggle-btn"><input type="checkbox" value="藝人經紀"><span class="btn-face">AGENCY</span></label>
-                    <label class="toggle-btn"><input type="checkbox" value="活動企劃"><span class="btn-face">EVENT PLAN</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="編曲製作"><span class="btn-face">BEAT MAKING</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="DJ 演出"><span class="btn-face">DJ LIVE SET</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="藝人經紀"><span class="btn-face">AGENCY</span></label>
+                    <label class="toggle-btn hover-target"><input type="checkbox" value="活動企劃"><span class="btn-face">EVENT PLAN</span></label>
                 </div>
                 <div class="output-area">
                     <div id="msg-display">READY TO TRANSMIT...</div>
-                    <button id="copy-btn" class="main-launch-btn">GENERATE & COPY MESSAGE</button>
+                    <button id="mail-btn" class="main-launch-btn hover-target">GENERATE & MAIL</button>
+                    <a id="email-link" href="mailto:ookkcity@gmail.com" class="hidden-link">ookkcity@gmail.com <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 </div>
             </div>
         </div>
 
         <!-- 9. 結尾 -->
-        <div class="stage" data-z="12000">
+        <div class="stage" data-z="13000">
             <h1 class="mega-title">THANKS</h1>
             <p>DESIGNED BY HO DIAN-EN</p>
         </div>
 
+    </div>
+
+    <!-- 通用圖片彈窗 -->
+    <div id="img-modal">
+        <span class="close-modal">&times;</span>
+        <img id="modal-content" src="">
     </div>
 
     <script src="script.js"></script>
