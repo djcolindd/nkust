@@ -278,3 +278,63 @@ body.dragging .cursor-ring { width: 30px; height: 30px; border-color: #fff; back
     }
 }
 
+/* --- [NEW] 導航點樣式 --- */
+
+/* 讓 scroll-bar 變成定位容器 */
+.scroll-bar {
+    position: relative; /* 關鍵 */
+    width: 100%; height: 4px; /* 加粗一點點方便點擊 */
+    background: #333; margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* 進度條顏色 */
+#scroll-progress {
+    width: 0%; height: 100%; 
+    background: var(--neon); 
+    box-shadow: 0 0 10px var(--neon);
+    transition: width 0.1s;
+}
+
+/* 點點容器：覆蓋在進度條上方 */
+.nav-points {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; justify-content: space-between; /* 均勻分佈 */
+    align-items: center;
+    pointer-events: none; /* 讓點擊穿透到點點本身 */
+}
+
+/* 單個導航點 */
+.nav-dot {
+    width: 12px; height: 12px;
+    background: #111; border: 1px solid #555;
+    border-radius: 50%;
+    cursor: pointer; pointer-events: auto; /* 恢復點擊 */
+    transition: 0.3s;
+    position: relative;
+    z-index: 10;
+}
+
+/* 點點 Hover 效果 */
+.nav-dot:hover {
+    background: var(--neon);
+    box-shadow: 0 0 10px var(--neon);
+    transform: scale(1.5);
+}
+
+/* 當前所在頁面的點點 (JS 控制) */
+.nav-dot.active {
+    background: var(--neon-blue);
+    border-color: var(--neon-blue);
+}
+
+/* Tooltip (提示文字) */
+.nav-dot::after {
+    content: attr(title); /* 讀取 HTML 的 title 屬性 */
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.8); color: var(--neon);
+    padding: 4px 8px; font-size: 0.7rem; border-radius: 4px;
+    white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s;
+    border: 1px solid var(--neon);
+}
+.nav-dot:hover::after { opacity: 1; bottom: 25px; }

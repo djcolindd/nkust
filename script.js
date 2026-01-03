@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        const target = e.target.closest('.hover-target, button, input, .cd-disc, .gear-card, .gallery-item, .time-node, .poster-card, a, .modal-link-btn');
+        const target = e.target.closest('.hover-target, button, input, .cd-disc, .gear-card, .gallery-item, .time-node, .poster-card, a, .modal-link-btn, .nav-dot');
         if (target) {
             document.body.classList.add('hovering');
             cursorTarget.innerText = "ACTIVE";
@@ -172,8 +172,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==========================================
-    // 4. 滾動引擎
+    // 4. 滾動引擎 (含 Nav Dots 邏輯)
     // ==========================================
+    
+    // [NEW] 導航點邏輯
+    const navDots = document.querySelectorAll('.nav-dot');
+
+    navDots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = parseInt(dot.dataset.idx);
+            currentStageIndex = idx;
+            triggerScroll();
+        });
+    });
+
+    function updateNavDots() {
+        navDots.forEach(dot => {
+            const idx = parseInt(dot.dataset.idx);
+            if (idx === currentStageIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    // 初始化
+    updateNavDots();
+
     window.addEventListener('wheel', (e) => {
         e.preventDefault();
         if (isScrolling) return;
@@ -209,6 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
         isScrolling = true;
         targetZ = stagePositions[currentStageIndex];
         if (targetZ > 100 && startHint) startHint.style.opacity = 0;
+        
+        // 更新導航點
+        updateNavDots();
+
         setTimeout(() => { isScrolling = false; }, 800);
     }
 
@@ -260,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const galleryItems = document.querySelectorAll('.clickable-gallery');
     const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.1);z-index:14000;display:none;opacity:0;transition:opacity 0.3s;';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:14000;display:none;opacity:0;transition:opacity 0.3s;';
     document.body.appendChild(overlay);
 
     galleryItems.forEach(item => {
@@ -289,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==========================================
-    // 7. [REWRITTEN] Agency Modal Logic (Page 8)
+    // 7. Agency Modal Logic (Page 8)
     // ==========================================
     const posters = document.querySelectorAll('.expandable-card');
     const agencyModal = document.getElementById('agency-modal-overlay');
@@ -301,30 +331,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     posters.forEach(poster => {
         poster.addEventListener('click', () => {
-            // 1. 獲取資料
             const showImg = poster.dataset.showImg;
             const title = poster.querySelector('h4').innerText;
             const desc = poster.querySelector('p').innerText;
-            
-            // 獲取隱藏的連結並轉換為新樣式按鈕
             const rawLinks = poster.querySelectorAll('.agency-links a');
+            
             let buttonsHTML = '';
             rawLinks.forEach(link => {
                 buttonsHTML += `<a href="${link.href}" target="_blank" class="modal-link-btn">${link.innerHTML}</a>`;
             });
 
-            // 2. 填入 Modal
             agencyImg.src = showImg;
             agencyTitle.innerText = title;
             agencyDesc.innerText = desc;
             agencyLinks.innerHTML = buttonsHTML;
 
-            // 3. 顯示 Modal
             agencyModal.style.display = 'flex';
         });
     });
 
-    // 關閉 Agency Modal
     agencyClose.addEventListener('click', () => {
         agencyModal.style.display = 'none';
     });

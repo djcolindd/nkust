@@ -55,9 +55,27 @@
     </nav>
 
     <div class="hud-bottom">
-        <div class="scroll-bar"><div id="scroll-progress"></div></div>
+        <div class="scroll-bar">
+            <div id="scroll-progress"></div>
+            
+            <!-- [NEW] 快速導航點 -->
+            <div class="nav-points">
+                <!-- data-idx 對應 Stage 的索引 (0~8) -->
+                <!-- title 是滑鼠移上去顯示的提示文字 -->
+                <div class="nav-dot hover-target" data-idx="0" title="HOME"></div>
+                <div class="nav-dot hover-target" data-idx="1" title="PROFILE"></div>
+                <div class="nav-dot hover-target" data-idx="2" title="ARMORY"></div>
+                <div class="nav-dot hover-target" data-idx="3" title="WORKS"></div>
+                <div class="nav-dot hover-target" data-idx="4" title="DATA"></div>
+                <div class="nav-dot hover-target" data-idx="5" title="LIVE"></div>
+                <div class="nav-dot hover-target" data-idx="6" title="LOG"></div>
+                <div class="nav-dot hover-target" data-idx="7" title="AGENCY"></div>
+                <div class="nav-dot hover-target" data-idx="8" title="CONTACT"></div>
+            </div>
+        </div>
         <p>SCROLL TO NAVIGATE</p>
     </div>
+
 
     <!-- 3D WORLD -->
     <div id="world">
