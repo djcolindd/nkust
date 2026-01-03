@@ -264,13 +264,29 @@
                     <label class="toggle-btn hover-target"><input type="checkbox" value="藝人經紀"><span class="btn-face">AGENCY</span></label>
                     <label class="toggle-btn hover-target"><input type="checkbox" value="活動企劃"><span class="btn-face">EVENT PLAN</span></label>
                 </div>
+                
+                <!-- [修改] 按鈕區域 -->
                 <div class="output-area">
                     <div id="msg-display">READY TO TRANSMIT...</div>
-                    <button id="mail-btn" class="main-launch-btn hover-target">GENERATE & MAIL</button>
+                    
+                    <!-- 新增按鈕群組容器 -->
+                    <div class="btn-group">
+                        <!-- 原本的 Mail 按鈕 -->
+                        <button id="mail-btn" class="main-launch-btn hover-target">
+                            <i class="fa-solid fa-envelope"></i> GENERATE & MAIL
+                        </button>
+                        
+                        <!-- [新增] Line 按鈕 -->
+                        <a href="https://lin.ee/BuzWr3d" target="_blank" class="line-btn hover-target">
+                            <i class="fa-brands fa-line"></i> ADD LINE
+                        </a>
+                    </div>
+
                     <a id="email-link" href="mailto:ookkcity@gmail.com" class="hidden-link">ookkcity@gmail.com <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 </div>
             </div>
         </div>
+
 
         <!-- 9. 結尾 -->
         <div class="stage" data-z="13000">

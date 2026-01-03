@@ -232,3 +232,49 @@ body.dragging .cursor-ring { width: 30px; height: 30px; border-color: #fff; back
     .poster-card.expanded img { width: 100%; height: auto; }
     .poster-card.expanded .poster-info { width: 100%; }
 }
+
+/* --- [新增] 第九頁 Line 按鈕與佈局 --- */
+
+/* 讓兩個按鈕並排顯示 */
+.btn-group {
+    display: flex;
+    gap: 15px; /* 按鈕間距 */
+    margin-top: 15px;
+}
+
+/* 調整原本的 Mail 按鈕，讓它佔一半寬度 */
+.main-launch-btn {
+    flex: 1; /* 自動填滿 */
+    width: auto; /* 覆蓋原本的 100% */
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+/* Line 按鈕專屬樣式 */
+.line-btn {
+    flex: 1; /* 自動填滿另一半 */
+    padding: 12px;
+    background: #06C755; /* Line 官方綠色 */
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Space Grotesk';
+    border: 1px solid #06C755;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* Line 按鈕 Hover 效果 */
+.line-btn:hover {
+    background: #fff;
+    color: #06C755;
+    box-shadow: 0 0 20px #06C755;
+}
+
+/* 手機版適配：變成上下排列 */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+    }
+}
+
